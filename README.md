@@ -1,2 +1,4 @@
 # imd-cienciadedados
 Pasta para as atividades da disciplina de ciência de dados
+
+Olá Meu nome é Renata Pitta Barros sou doutora em Engenharia Elétrica e de Computação pela Universidade Federal do Rio Grande do Norte (2017). Mestre em Engenharia da Computação pela pela mesma instituição (2008). Atualmente é aluna-pesquisadora regular do Programa de Pós- Graduação em Engenharia Elétrica e Computação, a nível de pós-doutorado, na linha de pesquisa:Tecnologias Educacionais, Ciência de Dados Educacioanis, Aprendizado de Máquina, Linguagem de Programação para Robôs, Robótica Pedagógica. Engenheira no Projeto de Inclusão Digital com Robôs (DCA - UFRN). Atuando principalmente no seguinte tema: Ciência de Dados Educacionais, Aprendizado de Máquina, Linguagem de Programação para Robôs. Tem experiência na área de programação.
