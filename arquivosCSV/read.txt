@@ -1,0 +1,3 @@
+Esse diretório tem os arquivos CSV de backup do sistema LOP da ECT
+
+As tabelas são: Usuário, turmas, submissões e listas de execícios
