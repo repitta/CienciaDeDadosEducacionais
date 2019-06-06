@@ -1,0 +1,111 @@
+Quantidade de questões submetidas por data
+
+
+#a = mergeSubLista.loc[ (mergeSubLista["data"].dt.year == 2018) & (mergeSubLista["data"].dt.month <= 7) & (mergeSubLista["data"].dt.hour <=12 ) ,["data", 'questao']] 
+a = mergeSubLista.loc[ (mergeSubLista["data"].dt.year == 2018) & (mergeSubLista["data"].dt.month <= 7) ,["data", 'questao']] 
+
+
+a.shape
+resultadoM.head() 
+
+a = mergeSubLista.loc[ (mergeSubLista["data"].dt.year == 2018) & (mergeSubLista["data"].dt.month >= 7) & (mergeSubLista["hora"].dt.hour <=12 ) ,["data", 'questao']] 
+
+resultadoM= a.groupby(["data"]).count()
+resultadoM = resultadoM.reset_index()
+#resultadoM= a.groupby(by= [a.data.dt.month, a.data.dt.day]).count()
+#resultadoM = resultadoM.reset_index()
+#resultadoM
+
+b = mergeSubLista.loc[ (mergeSubLista["data"].dt.year == 2018) & (mergeSubLista["data"].dt.month >= 7) & (mergeSubLista["hora"].dt.hour >=18 ) ,["data", 'questao']] 
+resultadoN= b.groupby(["data"]).count()
+resultadoN = resultadoN.reset_index()
+
+GQuanSubDataM = sns.FacetGrid(resultadoM,height=7, aspect=3, sharex=False)
+#GQuanSubDataN = sns.FacetGrid(resultadoN,height=7, aspect=3, sharex=False)
+
+GQuanSubDataM.map(sns.barplot,"data", "questao")
+#GQuanSubDataN.map(sns.barplot,"data", "questao")
+
+plt.xticks(rotation=90)
+plt.show()
+
+#criar alertas para os alunos que n tem frequencia de submissao
+============================================================================================
+
+
+==========================================================================================
+**Quantidade de submissoes por lista**
+
+a = mergeSubLista.groupby(['titulo']).count()
+a =a.reset_index()
+a.sort_values(by=['titulo'])
+==========================================================================================
+
+**Consulta por aluno**
+tabelaFinal.loc[tabelaFinal["matricula"]=='20180029933',["titulo",'id_aluno', 'ano', 'id_turma','matricula','nome','questoesFeitas','NotaLista' ,'quantidade']]
+
+========================================================================================
+
+**Media das notas das listas por ano**
+ano2019 = tabelaFinal.loc[ (tabelaFinal["ano"] == 2018.1) & (tabelaFinal["titulo"].str.contains('Lista de Laboratório', regex=False)) ]
+a = ano2019.groupby(["titulo"]).mean()
+a
+a=a.reset_index()
+a.columns
+
+===============================================================================================
+#Grafico para mostrar a media das notas por lista
+a=a.reset_index()
+A = sns.FacetGrid(a,height=6, aspect=3, sharex=False)
+
+A.map(sns.barplot,"titulo", "NotaLista")
+plt.xticks(rotation=90)
+plt.show()
+
+===============================================================================================
+import numpy as np
+
+turmaAno=tabelaFinal.loc[tabelaFinal["ano"] == 2018.2, ["matricula",'nome',"NotaLista","titulo","descricaoTurma",'questoesFeitas' ]] 
+#turmaDescricao = turmaAno.loc[turmaAno["descricaoTurma"].str.contains('Turma 03A', regex=False), ["matricula",'nome',"titulo","NotaLista"]]
+#turmaDescricao.sort_values(by='nome')
+turmaAno["NotaLista"] = turmaAno["NotaLista"] / 10
+#res= turmaAno.pivot_table(index ="nome", 
+#                     values = ["NotaLista", "questoesFeitas"], 
+#                    aggfunc = {'NotaLista':np.mean,"questoesFeitas":np.sum} )
+
+res= turmaAno.pivot_table(index ="nome", 
+                     values = ["questoesFeitas"], 
+                    aggfunc = {'questoesFeitas':np.sum} )
+res= res.reset_index()
+res.plot.hist()
+#res.plot.box()
+res.describe()
+#sns.boxplot(res["NotaLista"],whis=1.5,orient="vertical",width=.45)
+res["NotaLista"].value_counts().sort_index(ascending= False)
+
+============================================================================================
+#plt.plot(res["NotaLista"], res["questoesFeitas"])
+plt.scatter(res["NotaLista"], res["questoesFeitas"], marker="*", color='red')
+plt.title("Questões feitas x Nota")
+plt.xlabel("Notas")
+plt.ylabel("Questoes Feitas")
+plt.show()
+
+print(res.corr())
+
+===========================================================================================
+#Grafico para mostrar a quantidade alunos por turma
+QuanAluno = merge_user_turmas['descricaoTurma'].value_counts(normalize=True)
+
+def make_autopct(values):
+    def my_autopct(pct):
+        total = sum(values)
+        val = int(round(pct*total/100.0))
+        return '{v:d}'.format(v=val)
+    return my_autopct
+
+#QuanAluno.plot.pie(subplots=True,title="Quantidade de Alunos por turma",  autopct=make_autopct(QuanAluno), shadow=True, startangle=90)
+QuanAluno.plot.pie(subplots=True,title="Quantidade de Alunos por turma",  autopct='%.2f%%', shadow=True, startangle=90)
+plt.ylabel("")
+plt.axis('equal')
+plt.show()
